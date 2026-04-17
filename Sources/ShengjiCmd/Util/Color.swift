@@ -11,7 +11,12 @@ enum Color: Int {
 }
 
 extension String {
-    func colored(fg: Color, bg: Color) -> String {
-        return "\u{1B}[\(fg.rawValue + 30);\(bg.rawValue + 40)m\(self)\u{1B}[0m"
+    /// 为字符串添加终端颜色
+    /// - Parameters:
+    ///  - fg: 前景色
+    ///  - bg: 背景色，如果为 nil 则不设置背景色
+    func colored(fg: Color, bg: Color?) -> String {
+        let bgCode = bg?.rawValue != nil ? ";\(bg!.rawValue + 40)" : ""
+        return "\u{1B}[\(fg.rawValue + 30)\(bgCode)m\(self)\u{1B}[0m"
     }
 }

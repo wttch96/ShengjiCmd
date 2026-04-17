@@ -1,9 +1,9 @@
-struct Canvas {
+class Canvas {
     let width: Int
     let height: Int
     var grid: [[String?]]
 
-    fileprivate var bgColor: Color = .black
+    fileprivate var bgColor: Color? = nil
     fileprivate var fgColor: Color = .cyan
 
     init(width: Int, height: Int, withBorder: Bool = true) {
@@ -16,16 +16,11 @@ struct Canvas {
         }
     }
 
-    func setBg(_ color: Color) -> Self {
-        var copy = self
-        copy.bgColor = color
-        return copy
-    }
-
-    func setFg(_ color: Color) -> Self {
-        var copy = self
-        copy.fgColor = color
-        return copy
+    func setColor(fg: Color? = nil, bg: Color? = nil)  {
+        if let fg = fg {
+            self.fgColor = fg
+        }
+        self.bgColor = bg
     }
 
     func render() {
@@ -36,7 +31,7 @@ struct Canvas {
     }
 
     /// 使用 nil 来解决中文占两个字符的问题
-    fileprivate mutating func setCharacter(x: Int, y: Int, char: Character?) {
+    fileprivate func setCharacter(x: Int, y: Int, char: Character?) {
         guard x >= 0 && x < width && y >= 0 && y < height else { return }
         guard let char = char else {
             grid[y][x] = nil
@@ -46,8 +41,15 @@ struct Canvas {
     }
 }
 
+/// 文字对齐方向
+enum TextEdges {
+    case left
+    case right(Int)
+    case center(Int)
+}
+
 extension Canvas {
-    mutating func drawBox(x: Int, y: Int, boxWidth: Int, boxHeight: Int) {
+    func drawBox(x: Int, y: Int, boxWidth: Int, boxHeight: Int) {
         for i in 0..<boxWidth {
             setCharacter(x: x + i, y: y, char: "-")
             setCharacter(x: x + i, y: y + boxHeight - 1, char: "-")
@@ -62,19 +64,41 @@ extension Canvas {
         setCharacter(x: x + boxWidth - 1, y: y + boxHeight - 1, char: "+")
     }
 
+    func drawLine(x: Int, y: Int, length: Int, horizontal: Bool = true) {
+        for i in 0..<length {
+            var char: Character = " "
+            if i == 0 || i == length - 1 {
+                char = "+"
+            } else {
+                char = horizontal ? "-" : "|"
+            }
+            setCharacter(x: horizontal ? x + i : x, y: horizontal ? y : y + i, char: char)
+        }
+    }
+
     /// 绘制文字
     /// - Parameters:
     ///   - x: 坐标x
     ///   - y: 坐标y
     ///   - text: 文字，可以包含中文
     ///   - maxWidth: 最大显示长度
-    mutating func drawText(x: Int, y: Int, text: String, maxWidth: Int? = nil) {
-        var currentX = x
+    ///   - edges: 对齐方向
+    func drawText(x: Int, y: Int, text: String, edges: TextEdges = .left) {
+        // 首先计算文本的显示宽度
+        let textWidth = text.reduce(0) { $0 + $1.displayWidth }
+        var currentX = 0
+
+        switch edges {
+        case .left:
+            currentX = x
+        case .right(let maxWidth):
+            currentX = x + maxWidth - textWidth
+        case .center(let maxWidth):
+            currentX = x + (maxWidth - textWidth) / 2
+        }
+
         for char in text {
             let displayWidth = char.displayWidth
-            if let maxWidth = maxWidth, currentX + displayWidth > x + maxWidth {
-                break
-            }
             if displayWidth == 2 {
                 setCharacter(x: currentX, y: y, char: char)
                 setCharacter(x: currentX + 1, y: y, char: nil)  // 占位
