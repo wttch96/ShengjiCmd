@@ -5,11 +5,11 @@ class MenuScene: BaseScene {
 
         canvas.setColor(fg: .cyan)
 
-        let row = Col([
-            Text("1 开始游戏"),
-            Text("2 设置"),
+        let row = Col {
+            Text("1 开始游戏")
+            Text("2 设置")
             Text("3 退出")
-        ], alignment: .center)
+        }
 
         let _ = row.measure(maxWidth: 120, maxHeight: 20)
         row.layout(in: Rect(x: 0, y: 0, w: 120, h: 20))

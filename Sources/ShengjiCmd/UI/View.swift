@@ -23,3 +23,11 @@ protocol View {
     /// 渲染
     func render(to canvas: Canvas)
 }
+
+
+@resultBuilder
+struct ViewBuilder {
+    static func buildBlock(_ components: View...) -> [View] {
+        components
+    }
+}

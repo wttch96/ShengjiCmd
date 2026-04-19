@@ -1,13 +1,13 @@
 
+
 class Col: View {
     let children: [any View]
     var alignment: MainAxisAlignment = .start
     
     private var sizes: [Size] = []
     
-    init(_ children: [any View], alignment: MainAxisAlignment = .start) {
-        self.children = children
-        self.alignment = alignment
+    init(@ViewBuilder _ content: () -> [View]) {
+        self.children = content()
     }
 
     func measure(maxWidth: Int, maxHeight: Int) -> Size {
