@@ -17,6 +17,11 @@ class Row: View {
         self.alignment = alignment
     }
 
+    init(alignment: MainAxisAlignment = .start, @ViewBuilder _ content: () -> [View]) {
+        self.children = content()
+        self.alignment = alignment
+    }
+
     func measure(maxWidth: Int, maxHeight: Int) -> Size {
         sizes = []
         
@@ -24,7 +29,12 @@ class Row: View {
         var maxH = 0
         
         for child in children {
-            let size = child.measure(maxWidth: maxWidth, maxHeight: maxHeight)
+            let size: Size
+            if let space = child as? Space {
+                size = space.measureForRow(maxHeight: maxHeight)
+            } else {
+                size = child.measure(maxWidth: maxWidth, maxHeight: maxHeight)
+            }
             sizes.append(size)
             totalWidth += size.w
             maxH = max(maxH, size.h)
@@ -34,7 +44,33 @@ class Row: View {
     }
 
     func layout(in rect: Rect) {
-        let totalWidth = sizes.reduce(0) { $0 + $1.w }
+        if sizes.count != children.count {
+            _ = measure(maxWidth: rect.w, maxHeight: rect.h)
+        }
+
+        var adjustedSizes = sizes
+        let totalMinWidth = sizes.reduce(0) { $0 + $1.w }
+        let remainingWidth = max(0, rect.w - totalMinWidth)
+
+        let flexibleSpaces = children.enumerated().compactMap { index, child -> (Int, Int)? in
+            guard let space = child as? Space else { return nil }
+            return (index, space.flex)
+        }
+
+        let totalFlex = flexibleSpaces.reduce(0) { $0 + $1.1 }
+        if remainingWidth > 0 && totalFlex > 0 {
+            var leftoverWidth = remainingWidth
+            var leftoverFlex = totalFlex
+
+            for (index, flex) in flexibleSpaces {
+                let extra = leftoverWidth * flex / leftoverFlex
+                adjustedSizes[index] = Size(w: adjustedSizes[index].w + extra, h: adjustedSizes[index].h)
+                leftoverWidth -= extra
+                leftoverFlex -= flex
+            }
+        }
+
+        let totalWidth = adjustedSizes.reduce(0) { $0 + $1.w }
         
         var startX = rect.x
         
@@ -52,7 +88,7 @@ class Row: View {
         var currentX = startX
         
         for (i, child) in children.enumerated() {
-            let size = sizes[i]
+            let size = adjustedSizes[i]
             
             child.layout(
                 in: Rect(

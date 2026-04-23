@@ -7,10 +7,15 @@ class MenuScene: BaseScene {
 
         canvas.setColor(fg: .cyan)
 
-        let row = Col {
-            Text("1 开始游戏")
-            Text("2 设置")
-            Text("3 退出")
+        let row = Row {
+            Space()
+            Col {
+                Space()
+                Text("1 开始游戏")
+                Text("2 设置")
+                Text("3 退出")
+            }
+            Space()
         }
 
         let _ = row.measure(maxWidth: 120, maxHeight: 20)
