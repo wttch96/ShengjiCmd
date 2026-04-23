@@ -1,4 +1,11 @@
 
+enum MainAxisAlignment {
+    case start
+    case center
+    case end
+    case spaceBetween
+}
+
 
 class Col: View {
     let children: [any View]

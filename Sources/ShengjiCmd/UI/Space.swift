@@ -1,3 +1,6 @@
+
+
+/// 占位组件，用于在 Row/Col 中占用空间，支持设置最小尺寸和剩余空间分配权重
 final class Space: View {
     /// Space 在主轴上的最小尺寸
     private let minLength: Int

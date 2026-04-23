@@ -1,24 +1,27 @@
 
-class Text: View {
+/// 纯文字
+/// 没有多行支持，没有边框支持，只是简单的纯文字
+/// 文字的渲染结果就是1行和文字的实际渲染宽度
+class Text: ViewAttributes, View {
     let text: String
-    private var rect: Rect = Rect(x: 0, y: 0, w: 0, h: 0)
 
     init(_ text: String) {
         self.text = text
     }
 
+    /// 计算文本的显示宽度，中文占2格，英文占1格
     func measure(maxWidth: Int, maxHeight: Int) -> Size {
-        return Size(w: text.reduce(0) { $0 + $1.displayWidth } + 2, h: 3)   // 预留边框位置
+        return Size(w: text.reduce(0) { $0 + $1.displayWidth }, h: 1)   // 预留边框位置
     }
 
+    /// 布局时记录绝对位置，渲染时会用到
     func layout(in rect: Rect) {
-        self.rect = rect
+        absoluteRect = rect
     }
 
+    /// 渲染时直接在画布上绘制文本，使用前景色和背景色
     func render(to canvas: Canvas) {
-        // 绘制边框
-        canvas.drawBox(x: rect.x, y: rect.y, boxWidth: rect.w, boxHeight: rect.h)
-        canvas.drawText(x: rect.x + 1, y: rect.y + rect.h - 2, text: text)
+        canvas.setColor(fg: self.foregroundColor, bg: self.backgroundColor)
+        canvas.drawText(x: absoluteRect.x, y: absoluteRect.y, text: text)
     }
-
 }

@@ -9,12 +9,9 @@ class Canvas {
     fileprivate var bgColor: Color? = nil
     fileprivate var fgColor: Color = .cyan
 
-    private let withBorder: Bool
-
-    init(width: Int, height: Int, withBorder: Bool = true) {
+    init(width: Int, height: Int) {
         self.width = width
         self.height = height
-        self.withBorder = withBorder
         self.grid = Array(repeating: Array(repeating: " ", count: width), count: height)
         
         clean()
@@ -32,9 +29,6 @@ class Canvas {
             for x in 0..<width {
                 grid[y][x] = " "
             }
-        } 
-        if withBorder {
-            self.drawBox(x: 0, y: 0, boxWidth: width, boxHeight: height)
         }
     }
 
