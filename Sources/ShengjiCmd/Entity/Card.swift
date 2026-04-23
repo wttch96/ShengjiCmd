@@ -34,14 +34,11 @@ struct Card {
 extension Card: CustomStringConvertible {
     var description: String {
         if isSmallJoker {
-            return "小王".colored(fg: .white, bg: .blue)
+            return "小王"
         } else if isBigJoker {
-            return "大王".colored(fg: .white, bg: .red)
+            return "大王"
         } else if let suit = suit, let rank = rank {
-            let color: Color = (suit == .hearts || suit == .diamonds) ? .red : .blue
-            // rank 占两个字符，如果不够则补一个空格
-            // \(String(repeating: " ", count: 2-rank.description.count))
-            return "\(suit.rawValue)\(rank.description)".colored(fg: .white, bg: color)
+            return "\(suit.rawValue)\(rank.description)"
         } else {
             return "未知牌"
         }

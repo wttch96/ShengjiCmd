@@ -7,12 +7,12 @@ enum GameState {
 class Game {
     private var state: GameState = .menu
     
-    private var canvas: Canvas = Canvas(width: 160, height: 40)
+    private var canvas: Canvas = Canvas(width: 200, height: 40)
     private var currentScene: Scene
 
 
     init( ) {
-        currentScene = MenuScene(canvas: Canvas(width: 160, height: 40))
+        currentScene = MenuScene(canvas: canvas)
     }
 
     func loop() {
@@ -25,8 +25,12 @@ class Game {
             if let transition = currentScene.handleInput(input) {
                 // 处理场景切换
                 switch transition {
+                    case .mainMenu:
+                        currentScene = MenuScene(canvas: canvas)
                     case .settings:
                         currentScene = SettingScene(canvas: canvas)
+                    case .game:
+                        currentScene = GameScene(canvas: canvas)
                     default:
                         break
                 }

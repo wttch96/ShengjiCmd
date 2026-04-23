@@ -1,5 +1,7 @@
 
 
+import Darwin
+
 class MenuScene: BaseScene {
     override func render() {
 
@@ -19,8 +21,14 @@ class MenuScene: BaseScene {
     }
 
     override func handleInput(_ input: String) -> SceneTransition? {
+        if input == "1" {
+            return .game
+        }
         if input == "2" {
             return .settings
+        }
+        if input == "3" {
+            exit(0)
         }
         return nil
     }
