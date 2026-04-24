@@ -1,26 +1,21 @@
 
 
-enum RowAlignment {
-    case top
-    case center
-    case bottom
-}
 
 
 
 /// 水平排列视图，子视图会按照添加顺序依次水平排列
-class Row: View {
+class HStack: View {
     let children: [any View]
-    var alignment: RowAlignment = .center
+    var alignment: VerticalAlignment = .center
 
     private var sizes: [Size] = []
 
-    init(_ children: [any View], alignment: RowAlignment = .top) {
+    init(_ children: [any View], alignment: VerticalAlignment = .top) {
         self.children = children
         self.alignment = alignment
     }
 
-    init(alignment: RowAlignment = .top, @ViewBuilder _ content: () -> [View]) {
+    init(alignment: VerticalAlignment = .top, @ViewBuilder _ content: () -> [View]) {
         self.children = content()
         self.alignment = alignment
     }
@@ -54,7 +49,7 @@ class Row: View {
             _ = measure(maxWidth: rect.w, maxHeight: rect.h)
         }
 
-        // 计算剩余空间和对齐偏移
+        // 调整后的尺寸，主要考虑 Space 组件的剩余空间分配
         var adjustedSizes = sizes
         // 计算宽度
         let totalMinWidth = sizes.reduce(0) { $0 + $1.w }
@@ -83,21 +78,19 @@ class Row: View {
                 leftoverFlex -= flex
             }
         }
-
-        let totalWidth = adjustedSizes.reduce(0) { $0 + $1.w }
         
-        var startX = rect.x
+        var startY = rect.y
         
         switch alignment {
         case .top:
-            startX = rect.x
+            startY = rect.y
         case .center:
-            startX = rect.x + (rect.w - totalWidth) / 2
+            startY = rect.y + (rect.h - adjustedSizes.map { $0.h }.max()!) / 2
         case .bottom:
-            startX = rect.x + rect.w - totalWidth
+            startY = rect.y + (rect.h - adjustedSizes.map { $0.h }.max()!)
         }
 
-        var currentX = startX
+        var currentX = 0
         
         for (i, child) in children.enumerated() {
             let size = adjustedSizes[i]
@@ -105,7 +98,7 @@ class Row: View {
             child.layout(
                 in: Rect(
                     x: currentX,
-                    y: rect.y,
+                    y: startY,
                     w: size.w,
                     h: size.h
                 )

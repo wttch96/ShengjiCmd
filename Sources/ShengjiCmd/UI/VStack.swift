@@ -1,19 +1,13 @@
 
-enum MainAxisAlignment {
-    case start
-    case center
-    case end
-    case spaceBetween
-}
 
 
-class Col: View {
+class VStack: View {
     let children: [any View]
-    var alignment: MainAxisAlignment = .start
+    var alignment: HorizontalAlignment = .leading
     
     private var sizes: [Size] = []
     
-    init(alignment: MainAxisAlignment = .start, @ViewBuilder _ content: () -> [View]) {
+    init(alignment: HorizontalAlignment = .leading, @ViewBuilder _ content: () -> [View]) {
         self.children = content()
         self.alignment = alignment
     }
@@ -71,14 +65,12 @@ class Col: View {
         var startY = rect.y
         
         switch alignment {
-        case .start:
+        case .leading:
             startY = rect.y
         case .center:
             startY = rect.y + (rect.h - totalHeight) / 2
-        case .end:
+        case .trailing:
             startY = rect.y + rect.h - totalHeight
-        case .spaceBetween:
-            startY = rect.y
         }
 
         var currentY = startY

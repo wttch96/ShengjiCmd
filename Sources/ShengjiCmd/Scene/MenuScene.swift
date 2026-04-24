@@ -1,5 +1,3 @@
-
-
 import Darwin
 
 class MenuScene: BaseScene {
@@ -7,18 +5,22 @@ class MenuScene: BaseScene {
 
         canvas.setColor(fg: .cyan)
 
-        let row = Row {
+        let row = HStack(alignment: .center) {
             Space()
-            Col {
+            VStack {
+
+                Text("欢迎来到打升级")
+                    .bordered(.magenta)
                 Space()
-                Text("1 开始游戏")
-                    .bordered(.red)
-                Text("2 设置")
-                    .setForegroundColor(.cyan)
-                    .setBackgroundColor(.yellow)
-                Text("3 退出")
-                    .setForegroundColor(.red)
-                Space()
+                VStack {
+
+                    Text("1 开始游戏")
+                    Text("")
+                    Text("2 设置")
+                    Text("")
+                    Text("3 退出")
+                }
+                .bordered(.red)
             }
             Space()
         }

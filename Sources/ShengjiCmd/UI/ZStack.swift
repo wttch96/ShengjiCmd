@@ -13,6 +13,7 @@ enum AlignmentEdge {
 
 
 /// z轴堆叠视图，子视图会按照添加顺序依次覆盖在前一个视图上
+/// 暂时先不用，因为目前的需求还不需要，等后续需要了再完善
 class ZStack: View {
     let children: [any View]
     let alignment: AlignmentEdge
