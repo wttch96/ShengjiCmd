@@ -31,7 +31,7 @@ class HStack: View {
             let size: Size
             if let space = child as? Space {
                 // Space 组件在 Row 中测量时只关心主轴（宽度），交叉轴（高度）由 Row 统一处理
-                size = space.measureForRow(maxHeight: maxHeight)
+                size = space.measureForHStack(maxHeight: maxHeight)
             } else {
                 size = child.measure(maxWidth: maxWidth, maxHeight: maxHeight)
             }

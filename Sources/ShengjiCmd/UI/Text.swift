@@ -22,6 +22,6 @@ class Text: ViewAttributes, View {
     /// 渲染时直接在画布上绘制文本，使用前景色和背景色
     func render(to canvas: Canvas) {
         canvas.setColor(fg: self.foregroundColor, bg: self.backgroundColor)
-        canvas.drawText(x: absoluteRect.x, y: absoluteRect.y, text: text)
+        canvas.drawText(x: rect.x, y: rect.y, text: text)
     }
 }

@@ -21,7 +21,7 @@ class VStack: View {
         for child in children {
             let size: Size
             if let space = child as? Space {
-                size = space.measureForCol(maxWidth: maxWidth)
+                size = space.measureForVStack(maxWidth: maxWidth)
             } else {
                 size = child.measure(maxWidth: maxWidth, maxHeight: maxHeight)
             }

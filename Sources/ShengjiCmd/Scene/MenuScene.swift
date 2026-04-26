@@ -8,12 +8,10 @@ class MenuScene: BaseScene {
         let row = HStack(alignment: .center) {
             Space()
             VStack {
-
                 Text("欢迎来到打升级")
                     .bordered(.magenta)
                 Space()
                 VStack {
-
                     Text("1 开始游戏")
                     Text("")
                     Text("2 设置")

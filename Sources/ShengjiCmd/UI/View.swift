@@ -5,6 +5,11 @@ struct Size {
     let h: Int
 }
 
+struct Offset {
+    let x: Int
+    let y: Int
+}
+
 struct Rect {
     let x: Int
     let y: Int
@@ -43,6 +48,13 @@ class ViewAttributes {
     var foregroundColor: Color = .white
     /// 背景色
     var backgroundColor: Color? = nil
+    /// offset，布局时会用到
+    var offset: Offset = Offset(x: 0, y: 0)
+
+    /// 计算最终渲染位置，考虑offset
+    var rect: Rect {
+        return Rect(x: absoluteRect.x + offset.x, y: absoluteRect.y + offset.y, w: absoluteRect.w, h: absoluteRect.h)
+    }
 }
 
 extension ViewAttributes {
@@ -53,6 +65,11 @@ extension ViewAttributes {
 
     func setBackgroundColor(_ color: Color) -> Self {
         self.backgroundColor = color
+        return self
+    }
+
+    func offset(x: Int = 0, y: Int = 0) -> Self {
+        self.offset = Offset(x: x, y: y)
         return self
     }
 }

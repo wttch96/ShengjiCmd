@@ -20,11 +20,11 @@ final class Space: View {
         Size(w: minLength, h: minLength)
     }
 
-    func measureForRow(maxHeight: Int) -> Size {
+    func measureForHStack(maxHeight: Int) -> Size {
         Size(w: minLength, h: 0)
     }
 
-    func measureForCol(maxWidth: Int) -> Size {
+    func measureForVStack(maxWidth: Int) -> Size {
         Size(w: 0, h: minLength)
     }
 
