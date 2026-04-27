@@ -1,3 +1,5 @@
+import TerminalUI
+
 
 class BaseScene: Scene {
     let canvas: Canvas

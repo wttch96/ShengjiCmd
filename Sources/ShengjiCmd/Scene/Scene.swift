@@ -1,3 +1,5 @@
+import TerminalUI
+
 
 protocol Scene {
     init(canvas: Canvas)

@@ -1,4 +1,4 @@
-
+import TerminalUI
 
 /// 边框组件，给子视图添加一个边框
 class Border: ViewAttributes, View {

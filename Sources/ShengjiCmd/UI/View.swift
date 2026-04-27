@@ -1,3 +1,4 @@
+import TerminalUI
 
 
 struct Size {

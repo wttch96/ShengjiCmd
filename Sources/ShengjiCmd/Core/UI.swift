@@ -1,3 +1,5 @@
+import TerminalUI
+
 
 class GameUI {
     let width: Int

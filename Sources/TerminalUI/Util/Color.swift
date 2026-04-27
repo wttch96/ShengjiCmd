@@ -1,5 +1,5 @@
 
-enum Color: Int {
+public enum Color: Int {
     case black = 0
     case red = 1
     case green = 2
@@ -10,7 +10,7 @@ enum Color: Int {
     case white = 7
 }
 
-extension String {
+public extension String {
     /// 为字符串添加终端颜色
     /// - Parameters:
     ///  - fg: 前景色

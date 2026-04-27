@@ -1,15 +1,15 @@
 
 
 
-class Canvas {
-    let width: Int
-    let height: Int
+public final class Canvas {
+    public let width: Int
+    public let height: Int
     var grid: [[String?]]!
 
     fileprivate var bgColor: Color? = nil
     fileprivate var fgColor: Color = .cyan
 
-    init(width: Int, height: Int) {
+    public init(width: Int, height: Int) {
         self.width = width
         self.height = height
         self.grid = Array(repeating: Array(repeating: " ", count: width), count: height)
@@ -17,14 +17,14 @@ class Canvas {
         clean()
     }
 
-    func setColor(fg: Color? = nil, bg: Color? = nil)  {
+    public func setColor(fg: Color? = nil, bg: Color? = nil)  {
         if let fg = fg {
             self.fgColor = fg
         }
         self.bgColor = bg
     }
 
-    func clean() {
+    public func clean() {
         for y in 0..<height {
             for x in 0..<width {
                 grid[y][x] = " "
@@ -32,7 +32,7 @@ class Canvas {
         }
     }
 
-    func render() {
+    public func render() {
         let rendered = grid.map {
             $0.compactMap { $0 }.joined(separator: "")
         }.joined(separator: "\n")
@@ -51,13 +51,13 @@ class Canvas {
 }
 
 /// 文字对齐方向
-enum TextEdges {
+public enum TextEdges {
     case left
     case right(Int)
     case center(Int)
 }
 
-extension Canvas {
+public extension Canvas {
     func drawBox(x: Int, y: Int, boxWidth: Int, boxHeight: Int) {
         for i in 0..<boxWidth {
             setCharacter(x: x + i, y: y, char: "-")

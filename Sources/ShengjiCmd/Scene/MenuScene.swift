@@ -1,4 +1,5 @@
 import Darwin
+import TerminalUI
 
 class MenuScene: BaseScene {
     override func render() {

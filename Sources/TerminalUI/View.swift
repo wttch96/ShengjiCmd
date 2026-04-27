@@ -7,7 +7,8 @@ protocol View {
 
 
 extension View {
-    internal func _makeNode() {
-        
+    internal func _makeNode() -> LayoutNode {
+        let node = LayoutNode()
+        return node
     }
 }

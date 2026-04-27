@@ -1,5 +1,5 @@
-
-extension Character {
+    
+public extension Character {
     /// 计算中文字符的显示宽度
     var displayWidth: Int {
         // 简单使用 utf8 编码值域来判断

@@ -19,7 +19,8 @@ let package = Package(
         ),
 
         .executableTarget(
-            name: "ShengjiCmd"
+            name: "ShengjiCmd",
+            dependencies: ["TerminalUI"]
         ),
         .testTarget(
             name: "ShengjiCmdTests",

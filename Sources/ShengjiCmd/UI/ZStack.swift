@@ -1,3 +1,4 @@
+import TerminalUI
 
 enum AlignmentEdge {
     case topLeading
