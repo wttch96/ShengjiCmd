@@ -1,23 +1,20 @@
-import TerminalUI
+public final class VStack: View {
+    public let children: [any View]
+    public var alignment: HorizontalAlignment = .leading
 
-
-class VStack: View {
-    let children: [any View]
-    var alignment: HorizontalAlignment = .leading
-    
     private var sizes: [Size] = []
-    
-    init(alignment: HorizontalAlignment = .leading, @ViewBuilder _ content: () -> [View]) {
+
+    public init(alignment: HorizontalAlignment = .leading, @ViewBuilder _ content: () -> [any View]) {
         self.children = content()
         self.alignment = alignment
     }
 
-    func measure(maxWidth: Int, maxHeight: Int) -> Size {
+    public func measure(maxWidth: Int, maxHeight: Int) -> Size {
         sizes = []
-        
+
         var totalHeight = 0
         var maxW = 0
-        
+
         for child in children {
             let size: Size
             if let space = child as? Space {
@@ -29,11 +26,11 @@ class VStack: View {
             totalHeight += size.h
             maxW = max(maxW, size.w)
         }
-        
+
         return Size(w: maxW, h: totalHeight)
     }
 
-    func layout(in rect: Rect) {
+    public func layout(in rect: Rect) {
         if sizes.count != children.count {
             _ = measure(maxWidth: rect.w, maxHeight: rect.h)
         }
@@ -61,9 +58,8 @@ class VStack: View {
         }
 
         let totalHeight = adjustedSizes.reduce(0) { $0 + $1.h }
-        
-        var startY = rect.y
-        
+        let startY: Int
+
         switch alignment {
         case .leading:
             startY = rect.y
@@ -74,10 +70,9 @@ class VStack: View {
         }
 
         var currentY = startY
-        
-        for (i, child) in children.enumerated() {
-            let size = adjustedSizes[i]
-            
+
+        for (index, child) in children.enumerated() {
+            let size = adjustedSizes[index]
             child.layout(
                 in: Rect(
                     x: rect.x,
@@ -86,12 +81,12 @@ class VStack: View {
                     h: size.h
                 )
             )
-            
+
             currentY += size.h
         }
     }
 
-    func render(to canvas: Canvas) {
+    public func render(to canvas: Canvas) {
         for child in children {
             child.render(to: canvas)
         }

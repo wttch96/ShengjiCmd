@@ -1,45 +1,28 @@
-import TerminalUI
-
-enum AlignmentEdge {
-    case topLeading
-    case top
-    case topTrailing
-    case leading
-    case center
-    case trailing
-    case bottomLeading
-    case bottom
-    case bottomTrailing
-}
-
-
 /// z轴堆叠视图，子视图会按照添加顺序依次覆盖在前一个视图上
 /// 暂时先不用，因为目前的需求还不需要，等后续需要了再完善
-class ZStack: View {
-    let children: [any View]
-    let alignment: AlignmentEdge
+public final class ZStack: View {
+    public let children: [any View]
+    public let alignment: AlignmentEdge
 
-    init(@ViewBuilder _ content: () -> [View], alignment: AlignmentEdge = .topLeading) {
+    public init(@ViewBuilder _ content: () -> [any View], alignment: AlignmentEdge = .topLeading) {
         self.children = content()
         self.alignment = alignment
     }
 
-    func measure(maxWidth: Int, maxHeight: Int) -> Size {
+    public func measure(maxWidth: Int, maxHeight: Int) -> Size {
         var maxW = 0
         var maxH = 0
-        
+
         for child in children {
             let size = child.measure(maxWidth: maxWidth, maxHeight: maxHeight)
             maxW = max(maxW, size.w)
             maxH = max(maxH, size.h)
         }
-        
+
         return Size(w: maxW, h: maxH)
     }
 
-    func layout(in rect: Rect) {
-        // rect 是父视图传入的可用空间，ZStack 会将这个空间传递给所有子视图
-        // 根据 alignment 决定子视图在这个空间中的位置
+    public func layout(in rect: Rect) {
         for child in children {
             let childSize = child.measure(maxWidth: rect.w, maxHeight: rect.h)
             let childRect: Rect
@@ -67,7 +50,7 @@ class ZStack: View {
         }
     }
 
-    func render(to canvas: Canvas) {
+    public func render(to canvas: Canvas) {
         for child in children {
             child.render(to: canvas)
         }
